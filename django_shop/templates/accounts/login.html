@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - Интернет-магазин{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-form {
+        max-width: 450px;
+        margin: 0 auto;
+    }
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .password-reset-link {
+        font-size: 0.9rem;
+    }
+    .social-login {
+        border-top: 1px solid #dee2e6;
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block page_header %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="h2">🔐 Вход в систему</h1>
+        <p class="text-muted">Войдите в ваш аккаунт для доступа к личному кабинету</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="login-form">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Авторизация</h5>
+        </div>
+        <div class="card-body">
+            <!-- Форма входа -->
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                <!-- Email адрес -->
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}" class="form-label">
+                        <strong>{{ form.username.label }}</strong>
+                        <span class="text-danger">*</span>
+                    </label>
+                    {{ form.username }}
+                    {% if form.username.help_text %}
+                        <div class="form-text">{{ form.username.help_text }}</div>
+                    {% endif %}
+                    {% if form.username.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.username.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Пароль -->
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}" class="form-label">
+                        <strong>{{ form.password.label }}</strong>
+                        <span class="text-danger">*</span>
+                    </label>
+                    {{ form.password }}
+                    {% if form.password.help_text %}
+                        <div class="form-text">{{ form.password.help_text }}</div>
+                    {% endif %}
+                    {% if form.password.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.password.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Запомнить меня -->
+                <div class="form-group">
+                    <div class="form-check">
+                        {{ form.remember_me }}
+                        <label for="{{ form.remember_me.id_for_label }}" class="form-check-label">
+                            {{ form.remember_me.label }}
+                        </label>
+                    </div>
+                    <small class="form-text text-muted">
+                        При включении этой опции вы останетесь в системе на 30 дней
+                    </small>
+                </div>
+
+                <!-- Общие ошибки формы -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Кнопки -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        🔓 Войти в систему
+                    </button>
+                </div>
+            </form>
+
+            <!-- Дополнительные ссылки -->
+            <div class="text-center mt-3">
+                <a href="{% url 'accounts:password_reset' %}" class="password-reset-link text-decoration-none">
+                    🔑 Забыли пароль?
+                </a>
+            </div>
+
+            <!-- Разделитель -->
+            <div class="social-login text-center">
+                <p class="text-muted mb-3">Нет аккаунта?</p>
+                <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary">
+                    📝 Зарегистрироваться
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Информационный блок -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h6 class="card-title">💡 Преимущества входа в систему</h6>
+            <ul class="mb-0">
+                <li>🚀 Быстрое оформление заказов</li>
+                <li>📋 История покупок и заказов</li>
+                <li>🎯 Персональные рекомендации</li>
+                <li>📍 Сохраненные адреса доставки</li>
+                <li>⭐ Возможность оставлять отзывы</li>
+                <li>🔔 Уведомления о статусе заказов</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Помощь -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h6 class="card-title">❓ Проблемы со входом?</h6>
+            <p class="card-text mb-2">
+                <small class="text-muted">
+                    <strong>Не можете войти?</strong> Проверьте:
+                </small>
+            </p>
+            <ul class="mb-0">
+                <li><small>Правильность написания email адреса</small></li>
+                <li><small>Активирован ли ваш аккаунт (проверьте почту)</small></li>
+                <li><small>Не заблокирован ли аккаунт</small></li>
+                <li><small>Попробуйте восстановить пароль</small></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Добавляем валидацию полей в реальном времени
+    const form = document.querySelector('form');
+    const emailInput = document.getElementById('{{ form.username.id_for_label }}');
+    const passwordInput = document.getElementById('{{ form.password.id_for_label }}');
+    
+    // Валидация email
+    if (emailInput) {
+        emailInput.addEventListener('blur', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(this.value.trim())) {
+                this.classList.add('is-invalid');
+                this.classList.remove('is-valid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        });
+    }
+    
+    // Валидация пароля
+    if (passwordInput) {
+        passwordInput.addEventListener('blur', function() {
+            if (this.value.trim().length < 1) {
+                this.classList.add('is-invalid');
+                this.classList.remove('is-valid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        });
+    }
+
+    // Фокус на первое поле при загрузке страницы
+    if (emailInput && !emailInput.value) {
+        emailInput.focus();
+    }
+});
+</script>
+{% endblock %}

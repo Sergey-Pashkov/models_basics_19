@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование профиля - Интернет-магазин{% endblock %}
+
+{% block page_header %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="h2">✏️ Редактирование профиля</h1>
+        <p class="text-muted">Обновите свою личную информацию</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Личная информация</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h6 class="alert-heading">🚧 В разработке</h6>
+                    <p class="mb-0">
+                        Эта функция будет реализована на следующем этапе. 
+                        Сейчас доступен только просмотр профиля.
+                    </p>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-secondary">
+                        ← Вернуться к профилю
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

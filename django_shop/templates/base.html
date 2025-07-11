@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Интернет-магазин{% endblock %}</title>
+    
+    <!-- Bootstrap CSS для красивого оформления -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Дополнительные CSS стили -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <!-- Логотип сайта -->
+            <a class="navbar-brand" href="{% url 'accounts:home' %}">
+                🛒 Интернет-магазин
+            </a>
+            
+            <!-- Кнопка для мобильного меню -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Навигационное меню -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:home' %}">Главная</a>
+                    </li>
+                    <!-- Дополнительные пункты меню можно добавить здесь -->
+                </ul>
+                
+                <!-- Меню пользователя -->
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <!-- Меню для авторизованного пользователя -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                👤 {{ user.get_short_name }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Личный кабинет</a></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' %}">Редактировать профиль</a></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:change_password' %}">Изменить пароль</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Выход</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <!-- Меню для неавторизованного пользователя -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:login' %}">Вход</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:register' %}">Регистрация</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="container mt-4">
+        <!-- Сообщения системы (уведомления, ошибки) -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Блок для заголовка страницы -->
+        {% block page_header %}{% endblock %}
+
+        <!-- Основной контент страницы -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer class="bg-light mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Интернет-магазин</h5>
+                    <p class="text-muted">Лучшие товары по доступным ценам</p>
+                </div>
+                <div class="col-md-6">
+                    <h6>Полезные ссылки</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'accounts:home' %}" class="text-decoration-none">Главная</a></li>
+                        {% if not user.is_authenticated %}
+                            <li><a href="{% url 'accounts:register' %}" class="text-decoration-none">Регистрация</a></li>
+                            <li><a href="{% url 'accounts:login' %}" class="text-decoration-none">Вход</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <small class="text-muted">© 2025 Интернет-магазин. Учебный проект Django.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS для интерактивных элементов -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Дополнительные JavaScript файлы -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
