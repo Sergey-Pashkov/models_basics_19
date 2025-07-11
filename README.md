@@ -15,6 +15,11 @@
 - 🧪 Полное покрытие тестами
 - 📖 Подробная документация
 
+#### 📚 Дополнительная документация:
+- 📧 [EMAIL_SYSTEM_EXPLAINED.md](django_shop/EMAIL_SYSTEM_EXPLAINED.md) - объяснение системы email "на пальцах"
+- 🔄 [REGISTRATION_FLOW_DIAGRAM.md](django_shop/REGISTRATION_FLOW_DIAGRAM.md) - визуальные схемы процесса регистрации
+- 🎭 [demo_registration_explained.py](django_shop/demo_registration_explained.py) - живая демонстрация работы системы
+
 **[➡️ Перейти к Django Shop](django_shop/)**
 
 ### 📓 [Jupyter Notebook](DZ_Pro.ipynb)
